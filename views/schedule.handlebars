@@ -1,0 +1,99 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+<div class="container mt-5">
+    <h1 class="text-center">Horarios</h1>
+    <div class="row justify-content-end mt-5">
+        <div class="col-5 mt-5 ms-5">
+            <h2 class="mb-5">Agregar horario nuevo</h2>
+            <form action="/seleccionar-horarios" method="POST">
+                <div class="mb-4">
+                    <label class="form-label" for="date">Selecciona la fecha (mm-dd-yyyy)</label>
+                    <br>
+                    <input type="date" id="date" name="date" value='2021-11-06' required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="startTime">Selecciona la hora de inicio</label>
+                    <select class="form-select" style="width: 20%;" name="startTime" id="startTime"
+                        onchange="setEndTime()" required>
+                        <option value="0:00">0:00</option>
+                        <option value="0:30">0:30</option>
+                        <option value="1:00">1:00</option>
+                        <option value="1:30">1:30</option>
+                        <option value="2:00">2:00</option>
+                        <option value="2:30">2:30</option>
+                        <option value="3:00">3:00</option>
+                        <option value="3:30">3:30</option>
+                        <option value="4:00">4:00</option>
+                        <option value="4:30">4:30</option>
+                        <option value="5:00">5:00</option>
+                        <option value="5:30">5:30</option>
+                        <option value="6:00">6:00</option>
+                        <option value="6:30">6:30</option>
+                        <option value="7:00">7:00</option>
+                        <option value="7:30">7:30</option>
+                        <option value="8:00">8:00</option>
+                        <option value="8:30">8:30</option>
+                        <option value="9:00">9:00</option>
+                        <option value="9:30">9:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:00">15:00</option>
+                        <option value="15:30">15:30</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00">18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                        <option value="22:30">22:30</option>
+                        <option value="23:00">23:00</option>
+                        <option value="23:30">23:30</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="endTime">Selecciona la hora de fin</label>
+                    <select class="form-select" style="width: 20%;" name="endTime" id="endTime" required></select>
+                </div>
+                <button class="btn btn-primary" type="submit">Agregar</button>
+            </form>
+        </div>
+
+        <div class="col-5 mt-5">
+            <h2 class="mb-5">Horarios actuales</h2>
+            {{>message message=warning type="warning"}}
+            <ul class="list-group" style="width: 20vw; overflow-y: auto; max-height: 45vh;">
+                {{#each schedules}}
+                <li class="list-group-item" data-value={{this.id}}><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                        height="16" fill="red" class="bi bi-trash-fill me-3" style="cursor: pointer;"
+                        viewBox="0 0 16 16">
+                        <path onclick="deleteSchedule(event)"
+                            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                    </svg>{{this.fechaInicio}} &nbsp;&nbsp;&nbsp; a
+                    &nbsp;&nbsp;&nbsp; {{this.fechaFin}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../js/schedule.helper.js"></script>

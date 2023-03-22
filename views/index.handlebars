@@ -1,0 +1,168 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+<style>
+    .card {
+        margin: 6rem auto;
+        padding-top: 1rem;
+        width: 30rem;
+        height: 300px;
+    }
+
+    .card-button-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60%;
+    }
+
+    .card div a {
+        text-decoration: none;
+    }
+</style>
+
+<div id="instructions" class="container container-sm col-8 pt-4">
+    <img src="/assets/home.png" class="d-block mx-auto mt-5" width="200px" alt="students">
+
+    <h1 class="mt-5 text-center">Tutorías Cool</h1>
+
+     <div class="container text-center my-5">
+        <button type="button" class="btn btn-light me-2 fs-6"
+            onclick="window.location.href = '/login?opcion=crear-cuenta'">Crear cuenta</button>
+        <button type="button" class="btn btn-primary ms-2 fs-6"
+            onclick="window.location.href = '/login?opcion=seleccionar-cuenta'">Ingresar</button>
+    </div>
+
+    <div class="mb-4 mt-4">
+        <h2 class="text-center mb-4 mt-4">¿Quiénes somos?</h2>
+        <p>
+            <strong>Tutorías Cool</strong> es una plataforma para conectar profesores y estudiantes. Es un lugar de
+            encuentro entre estudiantes que necesitan reforzar conocimientos en cierta área de conocimiento y profesores
+            que quieren obtener un ingreso extra.
+        </p>
+        <p>
+            Se ofrece una amplia variedad de cursos que estudiantes de diversas carreras pueden aprovechar. Además de
+            que exiten muchas formas de pago. Algunos cursos son impartidos por estudiantes de TCU u horas estudiante
+            por lo que son totalmente gratuitos para el tutorando. Otros profesores ofrecen tutorías gratuitas y por
+            supuesto hay tutorías de paga.
+        </p>
+
+        <p>
+            La filosofía de la plataforma es que existan múltiples alternativas para todos los tipos de estudiantes, que
+            se adapten a sus necesidades y capacidades de pago.
+        </p>
+    </div>
+    <h3 class="text-center mb-3 mt-4">Instrucciones del sitio</h3>
+    <ul class="nav nav-pills nav-justified">
+        {{#if role}}
+
+        {{#ifTutor role}}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/dashboard/instrucciones?role=tutor">Tutor</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard/instrucciones?role=tutorando#tutorando">Tutorando</a>
+        </li>
+        {{/ifTutor}}
+
+        {{#ifTutorando role}}
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard/instrucciones?role=tutor#tutor">Tutor</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/dashboard/instrucciones?role=tutorando">Tutorando</a>
+        </li>
+        {{/ifTutorando}}
+
+        {{else}}
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/dashboard/instrucciones?role=tutor">Tutor</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard/instrucciones?role=tutorando">Tutorando</a>
+        </li>
+        {{/if}}
+
+    </ul>
+
+    <div class="mt-4">
+        {{#if role}}
+        {{#ifTutor role}}
+        <ul id="tutor">
+            <li class="mb-3">
+                Como tutor usted puede agregar los cursos que desea impartir.
+            </li>
+            <li class="mb-3">
+                Además, puede seleccionas aspectos como modalidad, tipo de sesión y retribución de la tutoría.
+            </li>
+            <li class="mb-3">
+                Elija el horario de acuerdo a sus necesidades.
+            </li>
+            <li class="mb-3">
+                Administre las solicitudes de tutorías: acepte o rechace según su criterio.
+            </li>
+            <li class="mb-3">
+                Como tutor usted puede agregar los cursos que desea impartir.
+            </li>
+            <li class="mb-3">
+                Lleve el control de los ingresos generados gracias a la tutorías.
+            </li>
+        </ul>
+        {{/ifTutor}}
+        {{#ifTutorando role}}
+        <ul id="tutorando">
+            <li class="mb-3">
+                Como tutorando usted puede buscar tutorías para los cursos ofrecidos en la plataforma. <strong>Nota:
+                </strong> Solo podrá buscar tutorías de cursos que tengan profesores asignados.
+            </li>
+            <li class="mb-3">
+                Una vez seleccionado el curso puede seleccionar aspectos como la modalidad y tipo de sesión de la
+                tutoría.
+            </li>
+            <li class="mb-3">
+                Debe seleccionar un horario dentro de los espacios que tiene disponible el profesor. El mínimo a
+                reservar es 1h con incrementos de 30 min.
+            </li>
+            <li class="mb-3">
+                Una vez finalizada la reserva de la tutoría en el dashboard aparecerá las tutorías próximas así como el
+                historias de las tutorías en las que ha participado.
+            </li>
+            <li class="mb-3">
+                El pago de la tutoría (no aplica para gratuitas, TCU u horas asistente) debe coordinarse de manera
+                externa con el profesor.
+            </li>
+        </ul>
+
+        {{/ifTutorando}}
+        {{else}}
+        <ul>
+            <li mb-3>
+                Como tutor usted puede agregar los cursos que desea impartir.
+            </li>
+            <li mb-3>
+                Además, puede seleccionas aspectos como modalidad, tipo de sesión y retribución de la tutoría.
+            </li>
+            <li mb-3>
+                Elija el horario de acuerdo a sus necesidades.
+            </li>
+            <li mb-3>
+                Administre las solicitudes de tutorías: acepte o rechace según su criterio.
+            </li>
+            <li mb-3>
+                Como tutor usted puede agregar los cursos que desea impartir.
+            </li>
+            <li mb-3>
+                Lleve el control de los ingresos generados gracias a la tutorías.
+            </li>
+        </ul>
+        {{/if}}
+    </div>
+    <br><br>
+   
+</div>
+
+
+<br>
+<br>
+<br>
+<br>

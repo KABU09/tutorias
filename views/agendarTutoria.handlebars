@@ -1,0 +1,124 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if data}}
+{{#with data}}
+<h1 class="text-center my-4">Agendar Tutoria</h1>
+
+<div class="container customTutorCurso">
+    <p class="card-title"><b>{{tutorCursoInformation.cursoNombre}} - {{tutorCursoInformation.cursoSigla}}</b></p>
+    <br>
+    <p class="card-text">{{tutorCursoInformation.primerNombre}} {{tutorCursoInformation.apellido}}</p>
+    <p class="card-text">{{tutorCursoInformation.cursoDescripcion}}</p>
+</div>
+
+<form class="tutoria-grid-container container"
+    action="/tutoria/confirmar?tutorCursoId={{tutorCursoInformation.tutorCursoId}}" method="post">
+    <div class="grid-item">
+        <div class="container customTutorCurso">
+            <p class="card-title">Modalidades disponible</p>
+
+            {{#each modalidades }}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="modalidad" id="modalidad-{{id}}" value="{{id}}"
+                    required>
+                <label class="form-check-label card-text" for="modalidad-{{id}}">
+                    {{nombre}}
+                </label>
+            </div>
+            {{/each}}
+
+        </div>
+
+        <div class="container customTutorCurso">
+            <p class="card-title">Tipos de sesión disponible</p>
+            {{#each tiposSesion }}
+
+            <div class="form-check" onclick="swiftSessionTypeRelatedSettings('{{id}}','{{nombre}}')">
+                <input class="form-check-input" type="radio" name="tipoDeSesion" id="tipoSesion-{{id}}" value="{{id}}"
+                    required>
+                <label class="form-check-label card-text" for="tipoSesion-{{id}}">
+                    {{nombre}}
+                </label>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="container customTutorCurso">
+            <p class="card-title">Caracter</p>
+            <fieldset id="caracterFieldSet" disabled>
+                {{#each caracteres }}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="caracter" id="caracteres-{{id}}" value="{{id}}"
+                        required>
+                    <label class="form-check-label card-text" for="caracteres-{{id}}">
+                        {{name}}
+                    </label>
+                </div>
+                {{/each}}
+            </fieldset>
+        </div>
+
+    </div>
+    <div class="grid-item">
+        <div class="container customTutorCurso">
+            <p class="card-title">Cantidad de participantes (<small>máximo permitido por el tutor: {{tutor.maxEstud}}</small>):</p>
+            <input id="amountOfParticipants" disabled class="form-control w-50" type="number" name="cantParticipantes"
+                id="cantParticipantes" min=2 max={{tutor.maxEstud}} required>
+        </div>
+        <div class="container customTutorCurso">
+            <p class="card-title">Plataformas</p>
+            {{#each plataformas }}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="plataforma" id="plataformas-{{id}}" value="{{id}}"
+                    required>
+                <label class="form-check-label card-text" for="plataformas-{{id}}">
+                    {{nombre}}
+                </label>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="container customTutorCurso">
+            <p class="card-text">Tipo de retribución: <b>{{retribucion.tipo}}</b></p>
+        </div>
+        {{!-- <div class="container customTutorCurso">
+            <p class="card-title">Costo por tutoría</p>
+            <p>Individual (1h): ₡00</p>
+            <p>Individual incremento (30min): ₡00</p>
+            <p>Grupal (1h): ₡00</p>
+            <p>Grupal incremento (30min): ₡00</p>
+        </div> --}}
+
+        <br><br>
+        <div class="container customTutorCurso">
+            <button type="submit" class="btn btn-primary">Continuar</button>
+        </div>
+    </div>
+</form>
+
+{{/with}}
+{{/if}}
+
+<script>
+    const swiftSessionTypeRelatedSettings = (tipoSesionId = '', tipoSesionNombre = '') => {
+        const caracterFieldSet = document.querySelector('#caracterFieldSet');
+        const amountOfParticipants = document.querySelector('#amountOfParticipants')
+        if (!caracterFieldSet || !amountOfParticipants) {
+            return;
+        }
+        if (tipoSesionNombre.toLowerCase() === 'grupal') {
+            caracterFieldSet.disabled = false;
+            amountOfParticipants.disabled = false;
+        }
+        else {
+            const caracterOptions = caracterFieldSet.querySelectorAll('input');
+            caracterOptions.forEach(option=>{
+                option.checked = false;
+            })
+            caracterFieldSet.disabled = true;
+            amountOfParticipants.value = '';
+            amountOfParticipants.disabled = true;
+        }
+    }
+</script>

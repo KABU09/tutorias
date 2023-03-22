@@ -1,0 +1,28 @@
+{
+  "name": "Workshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap-star-rating": "^4.1.2",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-handlebars": "^5.3.4",
+    "express-session": "^1.17.2",
+    "google-auth-library": "^7.10.0",
+    "jquery": "^3.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mdb-ui-kit": "^3.9.0",
+    "mdbootstrap": "^4.20.0",
+    "mssql": "^7.2.1"
+  }
+}

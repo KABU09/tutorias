@@ -1,0 +1,497 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+<h1 class="text-center mt-4 mb-2 fs-3">
+    Chat personal
+</h1>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div class="card chat-app" style="height: 100vh;">
+                <div id="plist" class="people-list">
+                    <form>
+                        <div class="input-group">
+ 
+                            <label for="searchFilter">Buscar tutoría</label>
+                            
+                            <div class="d-flex flex-row align-items-stretch">
+                                <input type="text" class="form-control" name="searchFilter" id="searchFilter">
+
+                                <input type="submit"  class="btn btn-secondary" value="Buscar">
+                            </div>
+                            
+                            
+                        </div>
+                    </form>
+                    <ul class="list-unstyled chat-list mt-2 mb-0"
+                        style="max-height: 80vh; overflow-y: auto; overflow-x: hidden">
+                        {{#if tutories}}
+                        {{#each tutories }}
+                        <li class="clearfix" onclick="loadConversation('{{this.id}}')"
+                            onkeyup="loadConversationOnEnter('{{this.id}}')" tabindex="0">
+                            <span class="pe-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#434651"
+                                    class="bi bi-people-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+                                    <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                                </svg>
+                            </span>
+
+                            <div class="d-inline-block ps-1">
+                                <div class="name d-inline">{{this.cursoNombre}}</div>
+                            </div>
+                            <div>
+                                <span class="small text-muted ps-5">{{this.fechaInicial}}</span>
+                            </div>
+                        </li>
+                        {{/each}}
+
+
+                        {{/if}}
+
+                    </ul>
+                </div>
+                <div class="chat">
+                    <div class="chat-header clearfix">
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <span class="pe-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#434651"
+                                        class="bi bi-people-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                        <path fill-rule="evenodd"
+                                            d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+                                        <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                                    </svg>
+                                </span>
+                                <div class="d-inline ps-1">
+                                    {{#if selectedTutory}}
+                                    <div class="name d-inline fw-bold">{{selectedTutory.cursoNombre}} -
+                                        {{selectedTutory.cursoSigla}}</div>
+                                    {{else}}
+                                    <div class="name d-inline fw-bold"></div>
+                                    {{/if}}
+                                </div>
+                                <div>
+                                    {{#if selectedTutory}}
+                                    <span class="small text-muted ps-5">
+                                        Fecha tutoría: {{selectedTutory.tutoriaFechaInicial}}
+                                    </span>
+
+                                    {{else}}
+                                    <span class="small text-muted ps-5"></span>
+                                    {{/if}}
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="flex-container">
+                        <div class="chat-history" style="height: 80% !important;">
+            
+                            <ul class="m-b-0" id="chat-history-list" style="max-height: 40vh; overflow-y: auto; overflow-x: hidden">
+                                
+                                
+                                {{#each messages }}
+                                    {{#if this.isSender}}
+                                    <li class="clearfix">
+                                        <div class="message-data text-end">
+                                            {{#if this.isPrivate}}
+                                            <small class="message-data-time fw-bold fs-6">(Privado)</small>
+                                            {{/if}}
+                                            <small class="message-data-time">
+                                                Para: {{this.receptorPrimerNombre}}
+                                                {{this.receptorApellido}}. {{this.fecha}}
+                                            </small>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                                class="bi bi-person-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="message other-message float-right">
+                                                {{this.contenido}}
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    {{else}}
+                                    <li class="clearfix">
+                                        <div class="message-data">
+                                            {{#if this.isPrivate}}
+                                            <small class="message-data-time fw-bold fs-6">(Privado)</small>
+                                            {{/if}}
+                                            <small class="message-data-time">
+                                                De: {{this.remitentePrimerNombre}}
+                                                {{this.remitenteApellido}}. {{this.fecha}}
+
+                                            </small>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                                class="bi bi-person-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                            </svg>
+                                        </div>
+                                        <div class="message my-message">
+                                            {{this.contenido}}
+                                        </div>
+                                    </li>
+
+                                    {{/if}}
+
+                                {{/each}}
+
+                            </ul>
+                            
+                        </div>
+                        {{#if selectedTutory}}
+                        <div class="chat-message clearfix" style="height: 20% !important;">
+                            <form method="post" action="/chat/send?tutoriaId={{selectedTutory.tutoriaId}}">
+                                <div class="input-group mb-2">
+                                    <label for="receptor" class="me-2">Para:</label>
+                                    <select name="receptor" id="receptor" class="form-select form-select-sm w-50" aria-label="destinatario">
+                                        <option value="0" selected required>Todos</option>
+                                        {{#each participantes }}
+                                        <option value="{{usuarioId}}">{{primerNombre}} {{apellido}} - {{correo}}</option>
+                                        {{/each}}
+                                        {{#if tutor}}
+                                        <option value="{{usuarioId}}">{{tutor.tutorPrimerNombre}} {{tutor.tutorApellido}} - {{tutor.tutorCorreo}}</option>
+                                        {{/if}}
+                                    </select>
+                                </div>
+                                <div class="input-group mb-0">
+                                    <div class="d-block w-100">
+                                        <div>
+                                            <label for="message">Escriba su mensaje</label>
+                                        </div>
+                                        
+                                        <div class="d-flex flex-row align-items-stretch">
+                                            <input type="text" class="form-control h-100" style="width: 75% !important;" name="message" required id="message" maxlength="255">
+
+                                            <input type="submit"  class="btn btn-secondary ms-1" value="Enviar">
+
+                                        </div>
+                                
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    body {
+        background-color: #f4f7f6;
+    }
+
+    .card {
+        background: #fff;
+        transition: .5s;
+        border: 0;
+        margin-bottom: 30px;
+        border-radius: .55rem;
+        position: relative;
+        width: 100%;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
+    }
+
+    .chat-app .people-list {
+        width: 280px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 20px;
+        z-index: 7
+    }
+
+    .chat-app .chat {
+        margin-left: 280px;
+        border-left: 1px solid #eaeaea
+    }
+
+    .people-list {
+        -moz-transition: .5s;
+        -o-transition: .5s;
+        -webkit-transition: .5s;
+        transition: .5s
+    }
+
+    .people-list .chat-list li {
+        padding: 10px 15px;
+        list-style: none;
+        border-radius: 3px
+    }
+
+    .people-list .chat-list li:hover {
+        background: #efefef;
+        cursor: pointer
+    }
+
+    .people-list .chat-list li.active {
+        background: #efefef
+    }
+
+    .people-list .chat-list li .name {
+        font-size: 15px
+    }
+
+    .people-list .chat-list img {
+        width: 45px;
+        border-radius: 50%
+    }
+
+    .people-list img {
+        float: left;
+        border-radius: 50%
+    }
+
+    .people-list .about {
+        float: right;
+        padding-left: 8px
+    }
+
+    .people-list .status {
+        color: #999;
+        font-size: 13px
+    }
+
+    .chat .chat-header {
+        padding: 15px 20px;
+        border-bottom: 2px solid #f4f7f6
+    }
+
+    .chat .chat-header img {
+        float: left;
+        border-radius: 40px;
+        width: 40px
+    }
+
+    .chat .chat-header .chat-about {
+        float: left;
+        padding-left: 10px
+    }
+
+    .chat .chat-history {
+        padding: 20px;
+        border-bottom: 2px solid #fff
+    }
+
+    .chat .chat-history ul {
+        padding: 0
+    }
+
+    .chat .chat-history ul li {
+        list-style: none;
+        margin-bottom: 30px
+    }
+
+    .chat .chat-history ul li:last-child {
+        margin-bottom: 0px
+    }
+
+    .chat .chat-history .message-data {
+        margin-bottom: 15px
+    }
+
+    .chat .chat-history .message-data img {
+        border-radius: 40px;
+        width: 40px
+    }
+
+    .chat .chat-history .message-data-time {
+        color: #434651;
+        padding-left: 6px
+    }
+
+    .chat .chat-history .message {
+        color: #444;
+        padding: 18px 20px;
+        line-height: 26px;
+        font-size: 16px;
+        border-radius: 7px;
+        display: inline-block;
+        position: relative
+    }
+
+    .chat .chat-history .message:after {
+        bottom: 100%;
+        left: 7%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #fff;
+        border-width: 10px;
+        margin-left: -10px
+    }
+
+    .chat .chat-history .my-message {
+        background: #efefef
+    }
+
+    .chat .chat-history .my-message:after {
+        bottom: 100%;
+        left: 30px;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-bottom-color: #efefef;
+        border-width: 10px;
+        margin-left: -10px
+    }
+
+    .chat .chat-history .other-message {
+        background: #e8f1f3;
+        text-align: right
+    }
+
+    .chat .chat-history .other-message:after {
+        border-bottom-color: #e8f1f3;
+        left: 93%
+    }
+
+    .chat .chat-message {
+        padding: 20px
+    }
+
+    .online,
+    .offline,
+    .me {
+        margin-right: 2px;
+        font-size: 8px;
+        vertical-align: middle
+    }
+
+    .online {
+        color: #86c541
+    }
+
+    .offline {
+        color: #e47297
+    }
+
+    .me {
+        color: #1d8ecd
+    }
+
+    .float-right {
+        float: right
+    }
+
+    .clearfix:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0
+    }
+
+    @media only screen and (max-width: 767px) {
+        .chat-app .people-list {
+            height: 465px;
+            width: 100%;
+            overflow-x: auto;
+            background: #fff;
+            left: -400px;
+            display: none
+        }
+
+        .chat-app .people-list.open {
+            left: 0
+        }
+
+        .chat-app .chat {
+            margin: 0
+        }
+
+        .chat-app .chat .chat-header {
+            border-radius: 0.55rem 0.55rem 0 0
+        }
+
+        .chat-app .chat-history {
+            height: 200px;
+            overflow-x: auto
+        }
+    }
+
+    @media only screen and (min-width: 768px) and (max-width: 992px) {
+        .chat-app .chat-list {
+            height: 650px;
+            overflow-x: auto
+        }
+
+        .chat-app .chat-history {
+            height: 600px;
+            overflow-x: auto
+        }
+    }
+
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
+        .chat-app .chat-list {
+            height: 480px;
+            overflow-x: auto
+        }
+
+        .chat-app .chat-history {
+            height: calc(100vh - 350px);
+            overflow-x: auto
+        }
+    }
+
+    .submit-button {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+    }
+
+    .flex-container{
+        height: 80vh !important;
+    }
+</style>
+
+
+<script>
+    const loadConversation = (tutoryId) => {
+        if (!tutoryId) {
+            throw new Error('tutoryId is missing')
+        }
+        console.log({ tutoryId })
+        location.href = location.origin + '/chat/tutoria?tutoriaId=' + tutoryId;
+    }
+    const loadConversationOnEnter = (tutoryId) => {
+        if (event.keyCode === 13) {
+            loadConversation(tutoryId);
+        }
+    }
+
+    window.addEventListener('load', ()=>{
+        console.log('entre')
+        const chatHistory = document.querySelector('#chat-history-list');
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    })
+</script>

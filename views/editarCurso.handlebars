@@ -1,0 +1,50 @@
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+
+<head>
+    <title>
+        Edición del curso
+    </title>
+</head>
+
+<style>
+    .mb-3 {
+        width: 50%;
+        margin: auto;
+    }
+
+    .label {
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-top: 4%;
+    }
+</style>
+
+<body>
+    <h1 style="text-align:center; margin-top:4%">Edición del curso</h1>
+    <form method="post" action="actualizarCurso">
+        <input type='hidden' value="{{cursoId}}" name=cursoId>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del curso</label>
+            <input type="text" value="{{detallesCurso.nombre}}" class="form-control" id="nombre" name="newName">
+        </div>
+
+        <div class="mb-3">
+            <label for="link" class="form-label">Sigla del curso</label>
+            <input type="text" value="{{detallesCurso.sigla}}" class="form-control" id="link" name="sigla">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Descripcion</label>
+            <textarea name="descripcion" class="form-control" id="exampleFormControlTextarea1"
+                rows="2">{{detallesCurso.descripcion}}</textarea>
+        </div>
+        <br>
+        <div style='text-align:center'>
+            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        </div>
+    </form>
+
+</body>

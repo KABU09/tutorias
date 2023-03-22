@@ -1,0 +1,93 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if data}}
+{{#with data}}
+<div class="container customTutorCurso">
+    <p class="card-title"><b>{{tutorCursoInformation.cursoNombre}} - {{tutorCursoInformation.cursoSigla}}</b></p>
+    <br>
+    <p class="card-text">{{tutorCursoInformation.primerNombre}} {{tutorCursoInformation.apellido}}</p>
+    <p class="card-text">{{tutorCursoInformation.cursoDescripcion}}</p>
+</div>
+
+<div class="tutoria-grid-container container">
+    <div class="grid-item">
+        <div class="container customTutorCurso">
+            <p class="card-title">Modalidades disponible</p>
+            <ul>
+                {{#each modalidades }}
+                <li class="card-text">
+                    {{nombre}}
+                </li>
+                {{/each}}
+            </ul>
+
+        </div>
+
+        <div class="container customTutorCurso">
+            <p class="card-title">Tipos de sesión disponible</p>
+            <ul>
+                {{#each tiposSesion }}
+                <li class="card-text"> {{nombre}}</li>
+                {{/each}}
+            </ul>
+        </div>
+
+        <div class="container customTutorCurso">
+            <p class="card-title">Caracter</p>
+            <ul>
+                {{#each caracteres }}
+                <li class="card-text">
+                    {{name}}
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+
+    <div class="grid-item">
+        {{!-- <div class="container customTutorCurso">
+            <p class="card-title">Máximo de participantes: {{tutor.maxEstud}}</p>
+        </div> --}}
+
+        <div class="container customTutorCurso">
+            <p class="card-title">Plataformas</p>
+            <ul>
+                {{#each plataformas }}
+                <li class="card-text">
+                    {{nombre}}
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
+        <div class="container customTutorCurso">
+            <p class="card-text">Tipo de retribución: <b>{{retribucion.tipo}}</b></p>
+        </div>
+        <div class="container customTutorCurso">
+            <p class="card-title">Costos por tutoría</p>
+            <p>Individual (1h): CRC {{tutor.costoHoraPersona}}</p>
+            <p>Individual incremento (30min): CRC {{tutor.incrementoTarifaIndividual}}</p>
+            <p>Grupal (1h): CRC {{tutor.costoHoraGrupal}}</p>
+            <p>Grupal incremento (30min): CRC {{tutor.incrementoTarifaGrupal}}</p>
+        </div>
+
+        <div class="container customTutorCurso">
+            <button type="button" class="btn btn-primary"
+                onclick="navigateToSearchTutor('{{tutorCursoInformation.tutorCursoId}}')">Agendar tutoría</button>
+        </div>
+
+    </div>
+</div>
+{{/with}}
+{{/if}}
+
+<br>
+<br>
+<br>
+
+<script>
+    const navigateToSearchTutor = (tutorCursoId) => {
+        location.href = `/tutoria/agendar?tutorCursoId=${tutorCursoId}`
+    }
+</script>

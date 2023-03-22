@@ -1,0 +1,197 @@
+{{#if noResults}}
+{{>message message=noResults type="warning"}}
+{{/if}}
+
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+
+<h1 class="text-center my-5">Buscar tutoría</h1>
+
+<div class="search-container">
+    <form action="?">
+        <input type="text" placeholder="Ingrese el curso que desea buscar..." aria-label="input field to search for course" name="search">
+        <button type="submit" aria-label="search button" id="search-icon"><i class="fa fa-search"></i>
+    </form>
+    <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle mt-2" type="button" data-bs-toggle="dropdown"
+            data-bs-auto-close="outside">
+            Filtrar
+        </button>
+        <div class="dropdown-menu">
+            <form class="py-3" method="post" action="/dashboard/buscar-cursos">
+                <div class="row justify-content-around">
+                    <div class="col-4">
+                        <div class="mb-3">
+                            <h6>Tipo de Retribución</h6>
+
+                            {{#each retribuciones}}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="retribuciones[{{this.tipo}}]"
+                                    value="{{this.id}}" id="{{this.tipo}}">
+                                <label class="form-check-label" for="{{this.tipo}}">
+                                    {{this.tipo}}
+                                </label>
+                            </div>
+                            {{/each}}
+                        </div>
+
+                        <div class="mb-3">
+                            <h6>Tipo de Sesión</h6>
+                            {{#each sesiones}}
+                            <div class="form-check">
+                                <input class="form-check-input" name="sesiones[{{this.nombre}}]" type="checkbox"
+                                    value="{{this.id}}" id="{{this.nombre}}">
+                                <label class="form-check-label" for="{{this.nombre}}">
+                                    {{this.nombre}}
+                                </label>
+                            </div>
+                            {{/each}}
+                        </div>
+
+                        <div class="mb-3">
+                            <h6>Regiones</h6>
+                            {{#each regiones}}
+                            <div class="form-check">
+                                <input class="form-check-input" name="regiones[{{this.nombre}}]" type="checkbox"
+                                    value="{{this.id}}" id="{{this.nombre}}">
+                                <label class="form-check-label" for="{{this.nombre}}">
+                                    {{this.nombre}}
+                                </label>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h6>Cantidad de tutorias agendadas</h6>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="min" class="form-label">Min</label>
+                                    <input type="number" name="cantidad[min]" min="1" class="form-control" id="min">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="max" class="form-label">Max</label>
+                                    <input type="number" name="cantidad[max]" class="form-control" id="max">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <fieldset class="starability-basic">
+                                <legend class="fs-6">Calificación Tutor</legend>
+                                <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="" checked
+                                    aria-label="No rating." />
+                                <input type="radio" id="rate1" name="rating" value="1" />
+                                <label for="rate1" title="Muy malo">1 star</label>
+                                <input type="radio" id="rate2" name="rating" value="2" />
+                                <label for="rate2" title="Malo">2 stars</label>
+                                <input type="radio" id="rate3" name="rating" value="3" />
+                                <label for="rate3" title="Regular">3 stars</label>
+                                <input type="radio" id="rate4" name="rating" value="4" />
+                                <label for="rate4" title="Bueno">4 stars</label>
+                                <input type="radio" id="rate5" name="rating" value="5" />
+                                <label for="rate5" title="Muy bueno">5 stars</label>
+                            </fieldset>
+                        </div>
+                        <button type="submit" class="btn btn-success me-2">Ok</button>
+                        <button type="reset" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg"
+                                width="16" height="16" fill="white" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                <path fill-rule="evenodd"
+                                    d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                            </svg> Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+{{#if openTutories}}
+<div class="text-center">
+    <p class="fs-3">Tutorías abiertas sugeridas</p>
+    <div id="sinCupoMessageError" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+        No hay cupos disponibles
+        <button type="button" class="btn-close" aria-label="Close" onclick="dismissModal()"></button>
+    </div>
+    <div class="result-container">
+        {{#each openTutories }}
+        
+            <button class="card clickeable-card"
+                onclick="navigateToSeeTutorySummary('{{this.tutoriaId}}', {{this.disponible}})">
+                <div class="card-body">
+                    <p class="card-title fs-5">{{this.cursoNombre}} 🔥🚀</p>
+                    <p class="card-subtitle mb-2 text-muted fs-6">{{this.cursoSigla}}</p>
+                    <p class="card-text">Prof. {{this.primerNombre}} {{this.apellido}}</p>
+                    <div class="d-flex justify-content-center">
+                        <p class="starability-result" data-rating="{{this.calificacion}}">Calificación
+                            {{this.calificacion}}
+                            estrellas</p>
+                    </div>
+                    <p class="card-text">Caracter: {{this.caracterName}}</p>
+                    {{#if this.disponible}}
+                    <p class="card-text text-success fw-bold">Cupos disponibles: {{this.cuposDisponibles}}</p>
+                    {{else}}
+                    <p class="card-text text-danger fw-bold">Cupos disponibles: Agotado</p>
+                    {{/if}}
+                    <p class="card-text">{{this.cursoDescripcion}}</p>
+                </div>
+            </button>
+
+        {{/each}}
+
+    </div>
+</div>
+{{/if}}
+
+{{#if matchedCourses}}
+<div class="text-center">
+    <p class="fs-3">Cursos disponibles</p>
+
+    <div class="container result-container">
+
+        {{#each matchedCourses }}
+        <button class="card clickeable-card" onclick="navigateToSearchTutor('{{this.tutorCursoId}}')">
+            <div class="card-body">
+                <p class="card-title fs-5">{{this.cursoNombre}}</p>
+                <p class="card-subtitle mb-2 text-muted fs-6">{{this.cursoSigla}}</p>
+                <p class="card-text">Prof. {{this.primerNombre}} {{this.apellido}}</p>
+                <div class="d-flex justify-content-center">
+                    <p class="starability-result" data-rating="{{this.calificacion}}">Calificación {{this.calificacion}}
+                        estrellas</p>
+                </div>
+                <p class="card-text">{{this.cursoDescripcion}}</p>
+            </div>
+        </button>
+
+        {{/each}}
+
+    </div>
+</div>
+{{/if}}
+
+<script>
+    const navigateToSearchTutor = (tutorCursoId) => {
+        location.href = `/tutoria/informacion?tutorCursoId=${tutorCursoId}`
+    }
+    const navigateToSeeTutorySummary = (tutoriaId, disponible) => {
+        if (disponible) {
+            location.href = `/tutoria/resumen?tutoriaId=${tutoriaId}`;
+        }
+        else {
+            const sinCupoMessageError = document.querySelector('#sinCupoMessageError');
+            sinCupoMessageError.classList.remove('d-none');
+        }
+    }
+    const dismissModal = () => {
+        const sinCupoMessageError = document.querySelector('#sinCupoMessageError');
+        sinCupoMessageError.classList.add('d-none');
+    }
+</script>

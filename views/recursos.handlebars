@@ -1,0 +1,125 @@
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 5%;
+    }
+
+    .formulario {
+        margin-bottom: 2%;
+        margin-left: 5%;
+        width: 50%
+    }
+
+    label {
+        font-size: 20px;
+    }
+
+    .table {
+        margin-left: 5%;
+        width: 90%
+    }
+
+    a {
+        color: inherit
+    }
+</style>
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if warning}}
+{{>message message=warning type="warning"}}
+{{/if}}
+
+<body>
+    <h2> Recursos didácticos</h2>
+    <form action="?">
+        <div class="formulario">
+            <label for="exampleFormControlInput1" class="form-label">Nombre del recurso</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name='resourceName'
+                placeholder="Ingrese el nombre del recurso">
+        </div>
+        <div class="formulario">
+            <label for="exampleFormControlTextarea1" class="form-label">Link del recurso</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Ingrese el link"
+                name='resourceLink'>
+        </div>
+
+        <div style='margin-left:25%'>
+            <button id="submit" style='align-items:center' type="submit" class="btn btn-primary">Agregar
+                recurso</button>
+        </div>
+        <input type='hidden' name='curso' value="{{curso}}">
+    </form>
+
+    <br><br>
+
+    <div style="height:300px;overflow:auto;">
+        <table class="table">
+            <thead>
+                <tr class='table-primary'>
+                    <th scope="col">Nombre del recurso</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Link</th>
+                    {{#if isAdmin}}
+                    <th scope="col">Administración</th>
+                    {{/if}}
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#if isAdmin}}
+                {{#each recursos}}
+                <tr>
+                    <td>{{this.nombre}}</td>
+                    <td>{{this.fullName}}
+                    <td>
+                        <a href="{{this.path}}">
+                            {{this.path}}
+                        </a>
+                    </td>
+                    <td>
+                        <span onclick="editResource('{{this.nombre}}')">
+                            <i class="bi bi-pencil-fill"></i>
+                        </span>
+                        <span onclick="deleteResource('{{this.nombre}}')">
+                            <i style="margin-left:15px" class="bi bi-x-circle-fill fa-lg"></i>
+                        </span>
+                    </td>
+                </tr>
+                {{/each}}
+                
+                {{else}}
+                    {{#each recursos}}
+                    <tr>
+                        <td>{{this.nombre}}</td>
+                        <td>{{this.fullName}}
+                        <td>
+                            <a href="{{this.path}}">
+                                {{this.path}}
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                {{/if}}
+
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
+<script>
+    function deleteResource(name) {
+        let searchParams = new URLSearchParams(window.location.search)
+        let curso = searchParams.get('curso')
+        window.location.href = location.origin + '/dashboard/eliminarRecurso?name=' + name + "&curso=" + curso
+    }
+
+    let editResource = (name) => {
+        console.log(name)
+        let searchParams = new URLSearchParams(window.location.search)
+        let curso = searchParams.get('curso')
+        window.location.href = location.origin + '/dashboard/editarRecurso?name=' + name + "&curso=" + curso
+    }
+</script>

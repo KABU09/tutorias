@@ -1,0 +1,74 @@
+<style>
+    .mb-3 {
+        width: 50%;
+        margin: auto;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 5%;
+        margin-bottom: 2%;
+    }
+
+    label {
+        font-size: 18px;
+    }
+
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+
+    .rating>input {
+        display: none
+    }
+
+    .rating>label {
+        position: relative;
+        width: 1em;
+        font-size: 30px;
+        font-weight: 300;
+        color: #FFD600;
+        cursor: pointer;
+        
+    }
+    .rating>label::before {
+        content: "\2605";
+        position: absolute;
+    }
+</style>
+{{#each misEvaluaciones}}
+<h2>Evaluación Anónima</h2>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">¿Se abarcaron todos los puntos en la
+        agenda?</label>
+    <input readonly type="text" class="form-control" id="exampleFormControlInput1" name="puntosAgendaAbarcados"
+        value="{{this.puntosAgendaAbarcados}}">
+</div>
+
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">¿Sus dudas fueron aclaradas de manera
+        satisfactoria?</label>
+    <input readonly type="text" class="form-control" id="exampleFormControlInput1" name="completitud"
+        value="{{this.completitud}}">
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">¿Se realizó algún tipo de práctica durante la
+        tutoría?</label>
+    <input readonly type="text" class="form-control" id="exampleFormControlInput1" name="practica"
+        value="{{this.practica}}">
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">¿Al finalizar la tutoría se pasó a un foro más
+                amplio? (preguntas y respuestas, ejercicios de práctica, ayuda asíncrona)</label>
+    <input readonly type="text" class="form-control" id="exampleFormControlInput1" name="foro" value="{{this.foro}}">
+</div>
+<div class="rating">
+    {{#foo this.evaluacionGeneral}}
+    <input type="radio" name="rating" value="5" id="5">
+    <label for="5">☆</label>
+    {{/foo}}
+</div>
+
+{{/each}}

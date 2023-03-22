@@ -1,0 +1,62 @@
+<div class="container mt-5">
+    <h1 class="text-center">Ingresos</h1>
+    <div class="row justify-content-center mt-5">
+        <div class="col-4 mt-5 me-3">
+            <h2>Consulta</h2>
+            <form method="post" action="/ingresos">
+                <div class="mb-3">
+                    <label for="start" class="form-label mb-3">Seleccione el mes que desea consultar</label>
+                    <br>
+                    <input type="month" id="month" name="monthYear" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-dark">Consultar</button>
+            </form>
+        </div>
+
+
+
+        <div class="col-6 mt-4">
+            {{#if error}}
+            {{>message message=error type="danger"}}
+            {{/if}}
+            {{#if success}}
+            {{>message message=success type="success"}}
+            {{/if}}
+            {{#if warning}}
+            {{>message message=warning type="warning"}}
+            {{/if}}
+            {{#if tutorias}}
+
+            <h3 class="mb-2 text-center">Ingresos en {{monthName}}:</h3>
+            <p class="fs-3 text-center"><b>{{totalIncome}}</b> crc</p>
+            <div class="accordion" style="width: 35vw; overflow-y: auto; max-height:60vh; margin: 0 auto;">
+                {{#each tutorias}}
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-{{tutoriaId}}" aria-expanded="true" aria-controls="collapseOne">
+                            <pre><b>{{costoTotal}} crc</b>     <span class="fs-6">{{cursoNombre}}   {{tutoriaFechaInicial}} - {{tutoriaFechaFinal}}</span></pre>
+                        </button>
+                    </h2>
+                    <div id="collapse-{{tutoriaId}}" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <p class="card-title">
+                                {{cursoSigla}}-{{cursoNombre}}</p>
+                            <p class="card-text">Horario: {{tutoriaFechaInicial}} {{tutoriaFechaFinal}}</p>
+                            <p class="card-text">Costo: <b>{{costoTotal}}</b> crc</p>
+                            <p class="card-text">Modalidad: {{modalidadNombre}}</p>
+                            <p class="card-text">Tipo Sesión: {{tipoSesionNombre}}</p>
+                            <p class="card-text">Plataforma: {{plataformaNombre}}</p>
+                            <button class="btn btn-secondary" onclick="navigateToSumary('{{this.tutoriaId}}')">Ver más
+                                información</button>
+
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
+<script src="../js/income.helper.js"></script>

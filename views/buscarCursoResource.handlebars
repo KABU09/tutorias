@@ -1,0 +1,47 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+
+{{#if noResults}}
+{{>message message=noResults type="warning"}}
+{{/if}}
+
+<div class="search-container">
+    <form action="?">
+        <input type="text" placeholder="Ingrese el curso que desea buscar..." name="search">
+        <button type="submit"><i class="fa fa-search"></i>
+    </form>
+</div>
+<br>
+<br>
+<br>
+
+
+
+
+{{#if matchedCourses}}
+<div>
+
+    <div class="result-container">
+
+        {{#each matchedCourses }}
+        <div class="card clickeable-card" onclick=getRecursosCurso('{{this.id}}')>
+            <div class="card-body">
+                <h5 class="card-title">{{this.nombre}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{this.sigla}}</h6>
+                <p class="card-text">{{this.descripcion}}</p>
+            </div>
+        </div>
+
+        {{/each}}
+        {{/if}}
+
+    </div>
+
+</div>
+
+<script>
+    const getRecursosCurso = (curso) => {
+        location.href = `/dashboard/recursos?curso=${curso}`
+    }
+</script>

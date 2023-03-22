@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</head>
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 5%;
+    }
+
+    .row {
+        margin-top: 75px;
+    }
+
+    .form-check {
+        font-size: 20px;
+    }
+
+    h3 {
+        text-align: center;
+    }
+
+    .col-md-6 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+</style>
+{{#if error}}
+{{>message message=error type="warning"}}
+{{/if}}
+
+<body>
+    <h2>Ingrese los datos del tipo de tutoría que ofrecerá</h2>
+    <form action='saveInfoTutor' , method='post'>
+        <div class='container'>
+            <div class='row'>
+                <div class='col-md-6 '>
+                    <h3>Modalidad</h3>
+                    {{#each modalidades}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name='modalidad' id="flexCheckDefault"
+                            value="{{this.nombre}}" value='Presencial'>
+                        {{this.nombre}}
+                    </div>
+                    {{/each}}
+                </div>
+
+                <div class='col-md-6'>
+                    <h3>Tipo Sesion</h3>
+                    {{#each sesiones}}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name='tipo' id="flexCheckDefault"
+                            value="{{this.nombre}}">
+                        {{this.nombre}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3> Tipo de retribución</h3>
+                    <select class="selectpicker" data-style="btn-info" name="selectPicker" required>
+                        <option name="" value="0" selected="true" disabled>Seleccione un tipo de retribución</option>
+                        {{#each retribuciones}}
+                        <option value="{{this.tipo}}">{{this.tipo}}</option>
+                        {{/each}}
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <h3> Máximo estudiantes por hora</h3>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="areaTexto" name='maxEstud'
+                            placeholder="Digite un valor numérico" required>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br> <br>
+        <button style="font-size: 25px;" id="submit" type="submit"
+            class="btn btn-primary mx-auto d-block">Continuar</button>
+
+    </form>
+
+</body>
+
+</html>

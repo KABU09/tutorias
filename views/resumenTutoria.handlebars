@@ -1,0 +1,221 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+{{#if warning}}
+{{>message message=warning type="warning"}}
+{{/if}}
+
+<br><br>
+<div class="container">
+    {{#with tutoria}}
+    <h1>Resumen tutoría</h1>
+    <div class="summary-section">
+        <h2>Fecha</h2>
+        <p>Inicio: {{tutoriaFechaInicial}}</p>
+        <p>Salida: {{tutoriaFechaFinal}}</p>
+        <p>Plataforma: {{plataformaNombre}}</p>
+    </div>
+
+    <div class="summary-section">
+        <h2>Curso</h2>
+        <p>Nombre: {{cursoNombre}}</p>
+        <p>Sigla: {{cursoSigla}}</p>
+        <p>Periodo: {{tutorCursoPeriodo}} del {{tutorCursoAno}}</p>
+        <p>Descripción: {{cursoDescripcion}}</p>
+    </div>
+
+    <div class="summary-section">
+        <h2>Tutor</h2>
+        <p>Nombre: {{tutorPrimerNombre}} {{tutorApellido}}</p>
+        <p>Región: {{tutorRegionNombre}}</p>
+        <p>Correo: <a href="mailto:{{tutorCorreo}}">{{tutorCorreo}}</a></p>
+    </div>
+
+    <div class="summary-section">
+        <h2>Tutoría</h2>
+        <p>Estado: {{estadoTutoriaNombre}}</p>
+        <p>Caracter: {{caracterNombre}}</p>
+        <p>Modalidad: {{modalidadNombre}}</p>
+        <p>Tipo de sesión: {{tipoSesionNombre}}</p>
+    </div>
+
+    <div class="summary-section">
+        <h2>Costo</h2>
+        <p>Cantidad participantes: {{tutoriaCantidadEstudiantes}}</p>
+        <p>Tipo Retribución {{retribucionTipo}}</p>
+        <p><b>Total: {{costoTotal}} CRC</b></p>
+        <p>
+            {{#if ../grupal}}
+            <small>
+                Costo por persona: {{costoTotalPorPersona}} CRC
+            </small>
+            {{/if}}
+
+        </p>
+    </div>
+    {{/with}}
+
+    <div>
+        <h2>Participantes</h2>
+
+        <div id="errorAlUnirseATutoriaAbierta" class="alert alert-danger alert-dismissible fade show d-none"
+            role="alert">
+            Error al unirse a tutoría
+            <button type="button" class="btn-close" aria-label="Close" onclick="dismissModal()"></button>
+        </div>
+
+        <button type="button" class="btn btn-primary"
+            onclick="window.location.href='/chat/tutoria?tutoriaId={{this.tutoria.tutoriaId}}'">
+            Ir al chat
+        </button>
+        {{#if grupal}}
+
+        {{#if user.tutorandoId}}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inviteStudent">
+            Invitar a estudiante
+        </button>
+        {{/if}}
+
+        <!-- Modal -->
+        <div class="modal fade" id="inviteStudent" tabindex="-1" aria-labelledby="inviteStudent" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invitar a estudiante</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="/tutoria/invitar">
+                        <div class="modal-body">
+                            <input hidden type="text" name="tutoriaId" value="{{this.tutoria.tutoriaId}}">
+                            <label for="students" class="form-label">Seleccione un estudiante</label>
+                            <input id="student-select" list="students" class="form-control"
+                                placeholder="Buscar un estudiante" name="email" required>
+                            <datalist id="students">
+                                {{#each this.students}}
+                                <option value="{{correo}}">{{primerNombre}} {{apellido}}</option>
+                                {{/each}}
+                            </datalist>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if isOpenTutory}}
+        <br>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#unirseATutoria">
+            Unirse a la tutoría
+        </button>
+        <br>
+        <br>
+        <!-- Modal -->
+        <div class="modal fade" id="unirseATutoria" tabindex="-1" aria-labelledby="unirseATutoriaLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="unirseATutoriaLabel">Unirse a tutoría</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Quiere unirse a esta tutoría abierta?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            onclick="unirseATutoria('{{this.tutoria.tutoriaId}}')">Unirse</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+        <table class="table table-light">
+            <thead>
+                <tr>
+                    {{#if this.horaIngreso}}
+                    <th>Hora de ingreso</th>
+                    {{/if}}
+                    {{#if this.horaEgreso}}
+                    <th>Hora de egreso</th>
+                    {{/if}}
+                    {{#if this.evaluacionId}}
+                    <th>Evaluación ID</th>
+                    {{/if}}
+                    <th scope="col">Nombre</th>
+                    {{!-- <th scope="col">Apellido</th> --}}
+                    <th scope="col">Correo</th>
+                    <th scope="col">Región</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {{#each participantes }}
+
+                <tr>
+                    {{#if this.horaIngreso}}
+                    <td>Hora de ingreso: {{this.horaIngreso}}</td>
+                    {{/if}}
+                    {{#if this.horaEgreso}}
+                    <td>Hora de egreso: {{this.horaEgreso}}</td>
+                    {{/if}}
+                    {{#if this.evaluacionId}}
+                    <td>Evaluación ID: {{this.evaluacionId}}</td>
+                    {{/if}}
+                    <td>{{this.primerNombre}} {{this.apellido}}</td>
+                    {{!-- <td>{{this.apellido}}</td> --}}
+                    <td><a style="color: #0d1dfd" href="mailto:{{this.correo}}">{{this.correo}}</a></td>
+                    <td>{{this.regionNombre}}</td>
+                </tr>
+
+                {{/each}}
+            </tbody>
+        </table>
+
+        <button class="btn btn-dark" onclick="window.location.href = '/dashboard'">Volver al dashboard</button>
+    </div>
+
+    <br>
+    <br>
+    <br>
+</div>
+
+<script>
+    const dismissModal = () => {
+        const sinCupoMessageError = document.querySelector('#errorAlUnirseATutoriaAbierta');
+        sinCupoMessageError.classList.add('d-none');
+    }
+    const openModal = () => {
+        const sinCupoMessageError = document.querySelector('#errorAlUnirseATutoriaAbierta');
+        sinCupoMessageError.classList.remove('d-none');
+    }
+    const unirseATutoria = async function (tutoriaId) {
+
+        const url = location.origin + '/tutoria/unirse?tutoriaId=' + tutoriaId;
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(tutoriaId)
+            })
+            if (!res.ok) {
+                throw new Error('Error al unirse a tutoría');
+            }
+            const response = await res.json();
+            location.href = location.origin + '/tutoria/resumen?tutoriaId=' + tutoriaId;
+
+        }
+        catch (err) {
+            console.log(err);
+            openModal();
+        }
+
+    }
+</script>

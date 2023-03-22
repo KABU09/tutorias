@@ -1,0 +1,108 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+<style>
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center
+    }
+
+    .rating>input {
+        display: none
+    }
+
+    .rating>label {
+        position: relative;
+        width: 1em;
+        font-size: 30px;
+        font-weight: 300;
+        color: #FFD600;
+        cursor: pointer
+    }
+
+    .rating>label::before {
+        content: "\2605";
+        position: absolute;
+        opacity: 0
+    }
+
+    .rating>label:hover:before,
+    .rating>label:hover~label:before {
+        opacity: 1 !important
+    }
+
+    .rating>input:checked~label:before {
+        opacity: 1
+    }
+
+    .rating:hover>input:checked~label:before {
+        opacity: 0.4
+    }
+
+    .mb-3 {
+        width: 50%;
+        margin: auto;
+    }
+
+    .label {
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-top: 5%;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 5%;
+    }
+
+    label {
+        font-size: 18px;
+    }
+</style>
+<h2>Evaluación de la tutoría</h2>
+<form method="post" action="guardarEvaluacion">
+        <input type='hidden' name='tutoriaId' value={{tutoriaId}}>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">¿Se abarcaron todos los puntos en la
+                agenda?</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="puntosAgendaAbarcados">
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">¿Sus dudas fueron aclaradas de manera
+                satisfactoria?</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="completitud">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">¿Se realizó algún tipo de práctica durante la
+                tutoría?</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="practica">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">¿Al finalizar la tutoría se pasó a un foro más
+                amplio? (preguntas y respuestas, ejercicios de práctica, ayuda asíncrona)</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="foro">
+        </div>
+        <br>
+        <p style="text-align: center; font-size:18px;">Calificación general de la tutoría</p>
+        <div class="rating">
+            <input type="radio" name="rating" value="5" id="5">
+            <label for="5">☆</label>
+            <input type="radio" name="rating" value="4" id="4">
+            <label for="4">☆</label>
+            <input type="radio" name="rating" value="3" id="3">
+            <label for="3">☆</label>
+            <input type="radio" name="rating" value="2" id="2">
+            <label for="2">☆</label>
+            <input type="radio" name="rating" value="1" id="1">
+            <label for="1">☆</label>
+        </div>
+        <br>
+        <button id="submit" type="submit" class="btn btn-primary mx-auto d-block">Continuar</button>
+    </form>

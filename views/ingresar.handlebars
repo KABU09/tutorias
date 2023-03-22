@@ -1,0 +1,89 @@
+<style>
+    .card {
+        margin: 6rem auto;
+        padding-top: 2rem;
+        width: 30rem;
+        height: 300px;
+    }
+
+    .card-button-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60%;
+    }
+
+    .card div a {
+        text-decoration: none;
+    }
+
+    .google-button {
+        width: 300px;
+        height: 200px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title text-center">Seleccione una cuenta de Google</h3>
+        <div class="card-button-section">
+            <div id="g_id_onload"
+                data-client_id="567769683459-qa1i28alaoqbv0ag3ulpcfta4h7nqfhc.apps.googleusercontent.com"
+                data-callback="handleCredentialResponse" data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="left" class="google-button">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{!-- <button onclick="signOut()">Sign Out</button> --}}
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+    function handleCredentialResponse(response) {
+
+        const tokenId = response.credential;
+
+        signInInBackend(tokenId).then(res => {
+            const { email } = res;
+
+            let params = (new URL(document.location)).searchParams;
+            let op = params.get('opcion');
+
+            if (op === 'crear-cuenta') {
+                window.location.href = location.origin + '/creacionCuenta'
+            }
+            else if (op === 'seleccionar-cuenta') {
+
+                window.location.href = location.origin + '/dashboard'
+
+            }
+            else {
+                window.location.href = location.origin;
+            }
+        })
+    }
+
+    async function signInInBackend(tokenId) {
+        const url = location.origin + '/login/google'
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "ContentType": "application/json",
+                "x-token": tokenId
+            },
+        })
+        return response.json();
+    }
+
+    function signOut() {
+        google.accounts.id.disableAutoSelect();
+
+        google.accounts.id.revoke(localStorage.getItem('email'), done => {
+            location.reload();
+        })
+    }
+</script>

@@ -1,0 +1,234 @@
+<style>
+    .active {
+        background-color: rgba(109, 118, 126, 0.157) !important;
+        color: #212529 !important;
+    }
+
+    .nav-link {
+        color: #212529;
+    }
+</style>
+
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+{{#if warning}}
+{{>message message=warning type="warning"}}
+{{/if}}
+
+
+<br><br>
+{{#unless userRole.admin}}
+<h1 class="text-center">Tutorías registradas</h1>
+<br><br>
+<ul class="nav nav-pills d-flex justify-content-center" id='tag-section'>
+    <li class="nav-item">
+        <a class="nav-link active" id="tabAccepted" href="#" onclick="changeTab(this)">Aceptadas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="tabPending" href="#" onclick="changeTab(this)">Pendientes</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="tabDenied" href="#" onclick="changeTab(this)">Rechazadas</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="tabFinalized" href="#" onclick="changeTab(this)">Finalizadas</a>
+    </li>
+</ul>
+{{/unless}}
+{{#if userRole.admin}}
+<h1 class="text-center">Bienvenido, administrador</h1>
+<div style="display: flex; justify-content:center">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h2 class="card-title">Ver Usuarios</h2>
+            <p class="card-text">Visualiza todos los usuarios que se han registrado en el sistema hasta el momento,
+                tanto tutores como
+                tutorandos</p>
+            <a href="/admin/verUsuarios" class="card-link">Ver lista de usuarios</a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h2 class="card-title">Mantenimiento de cursos</h2>
+            <p class="card-text">Aquí se pueden ver todos los cursos que se imparten actualmente, así como agregar
+                nuevos y editar
+                los ya existentes</p>
+            <a href="/admin/mantenimientoCursos" class="card-link">Administrar cursos</a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h2 class="card-title">Mantenimiento de recursos</h2>
+            <p class="card-text">Aquí se pueden ver los recursos de dominio público , así como
+                agregar nuevos y editar o borrar los ya existentes
+            </p>
+            <a href="/dashboard/buscarCursoRecurso" class="card-link">Administrar recursos</a>
+        </div>
+
+    </div>
+
+    {{/if}}
+    <div class="result-container" id="tabAcceptedContent">
+        {{#if acceptedTutories}}
+        {{#each acceptedTutories }}
+        <button class="card clickeable-card" onclick="navigateToSumary('{{this.tutoriaId}}')">
+            <div class="card-body">
+                <p class="card-title">
+                    <u>{{cursoSigla}}-{{cursoNombre}}</u>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">Tutor: {{tutorPrimerNombre}} {{tutorApellido}}</p>
+                <p class="card-text">Inicio: {{tutoriaFechaInicial}}</p>
+                <p class="card-text">Salida: {{tutoriaFechaFinal}}</p>
+                <p class="card-text"><b>Estado: {{estadoTutoriaNombre}}</b></p>
+            </div>
+        </button>
+
+        {{/each}}
+        {{else}}
+        {{#unless userRole.admin}}
+        <div class="mt-4">
+            {{>message message="No hay tutorías que mostrar" type="warning"}}
+        </div>
+        {{/unless}}
+        {{/if}}
+
+    </div>
+
+    <div class="result-container d-none" id="tabPendingContent">
+        {{#if pendingTutories}}
+        {{#each pendingTutories }}
+        <div class="card">
+            <button style="background-color: transparent; border: 0" class="card-body" onclick="navigateToSumary('{{this.tutoriaId}}')">
+                <p class="card-title">
+                    <u>{{cursoSigla}}-{{cursoNombre}}</u>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">Tutor: {{tutorPrimerNombre}} {{tutorApellido}}</p>
+                <p class="card-text">Inicio: {{tutoriaFechaInicial}}</p>
+                <p class="card-text">Salida: {{tutoriaFechaFinal}}</p>
+                <p class="card-text"><b>Estado: {{estadoTutoriaNombre}}</b></p>
+
+            </button>
+            {{#with ../userRole.tutor}}
+
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary mx-2 my-4" onclick="confirmTutory('{{../tutoriaId}}')">Aceptar</button>
+                <button class="btn btn-secondary mx-2 my-4" onclick="denyTutory('{{../tutoriaId}}')">Rechazar</button>
+            </div>
+
+            {{/with}}
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="mt-4">
+            {{>message message="No hay tutorías que mostrar" type="warning"}}
+        </div>
+        {{/if}}
+
+    </div>
+
+    <div class="result-container d-none" id="tabDeniedContent">
+        {{#if deniedTutories}}
+        {{#each deniedTutories }}
+        <button class="card clickeable-card" onclick="navigateToSumary('{{this.tutoriaId}}')">
+            <div class="card-body">
+                <p class="card-title">
+                    <u>{{cursoSigla}}-{{cursoNombre}}</u>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">Tutor: {{tutorPrimerNombre}} {{tutorApellido}}</p>
+                <p class="card-text">Inicio: {{tutoriaFechaInicial}}</p>
+                <p class="card-text">Salida: {{tutoriaFechaFinal}}</p>
+                <p class="card-text"><b>Estado: {{estadoTutoriaNombre}}</b></p>
+            </div>
+        </button>
+        {{/each}}
+        {{else}}
+        <div class="mt-4">
+            {{>message message="No hay tutorías que mostrar" type="warning"}}
+        </div>
+        {{/if}}
+
+    </div>
+
+    <div class="result-container d-none" id="tabFinalizedContent">
+        {{#if finalizedTutories}}
+        {{#each finalizedTutories }}
+        <div class="card">
+            <button style="background-color: transparent; border: 0" class="card-body" onclick="navigateToSumary('{{this.tutoriaId}}')">
+                <p class="card-title">
+                    <u>{{cursoSigla}}-{{cursoNombre}}</u>
+                </p>
+                <p class="card-subtitle mb-2 text-muted">Tutor: {{tutorPrimerNombre}} {{tutorApellido}}</p>
+                <p class="card-text">Inicio: {{tutoriaFechaInicial}}</p>
+                <p class="card-text">Salida: {{tutoriaFechaFinal}}</p>
+                <p class="card-text"><b>Estado: {{estadoTutoriaNombre}}</b></p>
+            </button>
+            {{#with ../userRole.tutorando}}
+
+            <div class="d-flex justify-content-center">
+                <a href='../tutoria/evaluacion?tutoriaId={{../tutoriaId}}'>
+                    <button class="btn btn-primary mx-2 my-4" onclick="evaluateTutory('{{../tutoriaId}}')">
+                        Evaluar
+                    </button>
+                </a>
+            </div>
+
+            {{/with}}
+            {{#with ../userRole.tutor}}
+
+            <div class="d-flex justify-content-center">
+                <a href='../tutoria/verMisEvaluaciones?tutoriaId={{../tutoriaId}}'>
+                    <button class="btn btn-primary mx-2 my-4" onclick="evaluateTutory('{{../tutoriaId}}')">
+                        Ver evaluación
+                    </button>
+                </a>
+            </div>
+
+            {{/with}}
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="mt-4">
+            {{>message message="No hay tutorías que mostrar" type="warning"}}
+        </div>
+        {{/if}}
+
+    </div>
+
+    <script>
+        const confirmTutory = async (tutoriaId) => {
+
+            const url = location.origin + '/dashboard/update-tutory?mode=confirm'
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tutoriaId })
+            })
+                .then(res => {
+                    location.reload();
+                })
+        }
+
+        const denyTutory = async (tutoriaId) => {
+
+            const url = location.origin + '/dashboard/update-tutory?mode=deny'
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tutoriaId })
+            })
+                .then(res => {
+                    location.reload();
+                })
+
+        }
+    </script>

@@ -1,0 +1,38 @@
+<style>
+    #subTitle {
+        font-weight: bold;
+        margin-bottom: 5%;
+    }
+
+    .form-check {
+        font-size: 20px;
+        margin: 0 auto;
+        width: 10%;
+        padding-left: 0;
+    }
+</style>
+<div class="form-container d-flex flex-column align-items-center justify-content-center h-100">
+    <h2 id="subTitle">Seleccione el tipo de cuenta</h2>
+    <form class="w-50" action="/creacionCuenta/saveData" method="post">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoUsuario" id="tutor" value="tutor">
+            <label class="form-check-label" for="tutor">Tutor</label>
+
+        </div>
+        <br>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoUsuario" value="tutorando" id="tutorando" checked>
+            <label class="form-check-label" for="tutorando">Tutorando</label>
+        </div>
+        <br>
+        <select class="selectpicker" data-style="btn-info" name="selectpicker" style="margin-left: 39%;" required>
+            <option name="" value="0" selected="true" disabled>Seleccione una región</option>
+            {{#each region}}
+            <option value="{{this.nombre}}">{{this.nombre}}</option>
+            {{/each}}
+            </optgroup>
+        </select>
+        <br><br>
+        <button id="submit" type="submit" class="btn btn-primary mx-auto d-block">Continuar</button>
+    </form>
+</div>

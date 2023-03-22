@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/dashboard">TutoriasCool</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {{#if user.tutorandoId}}
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/dashboard">Panel de Tutorías</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard/buscar-cursos">Buscar tutoría</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chat" href="/chat">Chat</a>
+                </li>
+                {{else if user.tutorId}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">Panel de Tutorías</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard/seleccionarCurso">Seleccionar Curso</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/seleccionar-horarios">Seleccionar Horarios Disponibles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/ingresos">Ingresos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="chat" href="/chat">Chat</a>
+                </li>
+                {{/if}}
+                {{#if user.adminId}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/verUsuarios">Ver usuarios</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/mantenimientoCursos">Mantenimiento de cursos</a>
+                </li>
+                {{/if}}
+                <li class="nav-item">
+                    {{!-- <a class="nav-link" href="/dashboard/recursos">Recursos de dominio público</a> --}}
+                    <a class="nav-link" href="/dashboard/buscarCursoRecurso">Recursos de dominio público</a>
+
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a style=" background-color:transparent;border-color:transparent;color:#999696"
+                            class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Configuración
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li> <a class="dropdown-item" href="/dashboard/administrar">Información personal</a></li>
+                            {{#if user.tutorId}}
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="/dashboard/cambiarParametros">Preferencias de tutoría</a>
+                            </li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" href="/logout">Salir</a>
+                </li>
+            </ul>
+            {{#with user}}
+            <div class="user-info">
+                <ul class="mt-3">
+                    <li class="role-heading">
+                        {{name}} ({{role}})
+                    </li>
+                </ul>
+                <img src="{{picture}}" alt="{{name}}" class="avatar">
+            </div>
+            {{/with}}
+        </div>
+    </div>
+</nav>

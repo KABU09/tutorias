@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+*{
+    font-family: 'Roboto', sans-serif;
+}
+
+html,body {
+    height: 100%;
+}
+.search-container {
+    display: flex;
+    justify-content: center;
+}
+
+.search-container form input[type=text] {
+    width: 500px;
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: 1px solid #ccc;
+}
+
+.search-container #search-icon {
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+} 
+
+.result-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card{
+    width: 18rem;
+    margin: 1rem 1rem;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user-info {
+    display: grid;
+    grid-template-columns: auto auto;
+    /* justify-content: flex-end; */
+    justify-content: end;
+    align-items: center;
+    gap: 20px;
+    color: rgb(251, 249, 249);
+    width: 30%;
+}
+
+
+.card-text{
+    font-size: 12px;
+}
+
+.clickeable-card{
+    cursor: pointer;
+}
+
+.clickeable{
+    cursor: pointer;
+}
+
+.customTutorCurso{
+    margin-top: 2rem;
+}
+
+.form-check-input{
+    cursor: pointer;
+}
+
+.tutoria-grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.card-title{
+    font-size: 18px;
+}
+
+.card-text{
+    font-size: 16px;
+}
+
+.role-heading {
+    color: white;
+    margin: 0;
+    list-style-type: none;
+    
+}
+
+.summary-section{
+    margin: 2rem 0;
+}
+

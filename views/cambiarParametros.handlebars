@@ -1,0 +1,145 @@
+{{#if error}}
+{{>message message=error type="danger"}}
+{{/if}}
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 5%;
+    }
+
+    .row {
+        margin-top: 75px;
+    }
+
+    .form-check {
+        font-size: 20px;
+    }
+
+    h3 {
+        text-align: center;
+    }
+
+    h4 {
+        text-align: center;
+    }
+
+    .col-md-6 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .col-md-4 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+</style>
+
+<body>
+    <form method="post" action='guardarParametros'>
+        <div class='container'>
+            <div class='row'>
+                <div class='col-md-6 d-flex justify-content-center'>
+                    <h3>Modalidad</h3>
+                    <div>
+                        {{#each modalidadesChecked}}
+                        <div class="form-check">
+                            <input checked class="form-check-input" type="checkbox" name='modalidad'
+                                id="flexCheckDefault" value="{{this.NOMBRE}}" value='Presencial'>
+                            {{this.NOMBRE}}
+                        </div>
+                        {{/each}}
+                        {{#each modalidadesUnchecked}}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name='modalidad' id="flexCheckDefault"
+                                value="{{this.nombre}}" value='Presencial'>
+                            {{this.nombre}}
+                        </div>
+                        {{/each}}
+                    </div>
+
+                </div>
+
+                <div class='col-md-6 d-flex justify-content-center'>
+                    <h3>Tipo Sesion</h3>
+                    <div>
+                        {{#each sesionesChecked}}
+                        <div class="form-check">
+                            <label for="sesion"></label>
+                            <input checked class="form-check-input" type="checkbox" name='tipo' id="sesion"
+                                value="{{this.NOMBRE}}">
+                            {{this.NOMBRE}}
+                        </div>
+                        {{/each}}
+                        {{#each sesionesUnchecked}}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name='tipo' id="flexCheckDefault"
+                                value="{{this.nombre}}">
+                            {{this.nombre}}
+                        </div>
+                        {{/each}}
+                    </div>
+
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-6'>
+                    <div class="mb-3">
+                        <h4>Costo individual</h4>
+                        {{!-- <label for="individual" class="form-label">Costo individual(1 hora)</label> --}}
+                        <input type="number" class="form-control" id="exampleFormControlInput1" name='costoHoraPersona'
+                            value={{costoHoraPersona.costoHoraPersona}}>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class="mb-3">
+                        <h4>Costo Incrementos(30 minutos)</h4>
+                        {{!-- <label for="incrementos" class="form-label">Costo Incrementos(30 minutos)</label> --}}
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                            name='incrementoTarifaIndividual'
+                            value={{incrementoTarifaIndividual.incrementoTarifaIndividual}}>
+                    </div>
+                </div>
+            </div>
+
+            <div class='row'>
+                <div class='col-md-6'>
+                    <div class="mb-3">
+                        <h4>Costo grupal por persona</h4>
+                        {{!-- <label for="individual" class="form-label">Costo individual(1 hora)</label> --}}
+                        <input type="number" class="form-control" id="exampleFormControlInput1" name='costoHoraGrupal'
+                            value={{costoHoraGrupal.costoHoraGrupal}}>
+                    </div>
+                </div>
+                <div class='col-md-6'>
+                    <div class="mb-3">
+                        <h4>Costo grupal incrementos(30 minutos)</h4>
+                        {{!-- <label for="incrementos" class="form-label">Costo Incrementos(30 minutos)</label> --}}
+                        <input type="number" class="form-control" id="exampleFormControlInput1"
+                            name='incrementoTarifaGrupal' value={{incrementoTarifaGrupal.incrementoTarifaGrupal}}>
+                    </div>
+                </div>
+
+            </div>
+            <div class='col-md-12' style="text-align: center;">
+                <h4 style="margin-bottom: 10px">Tipo de retribución</h4>
+                <select style="width:20%" class="selectpicker" data-style="btn-info" name="selectPicker" required>
+                    <option name="" value="0" selected="true" disabled>Seleccione un tipo de retribución</option>
+                    {{#each retribuciones}}
+                    <option value="{{this.tipo}}">{{this.tipo}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <br />
+        <button style="margin-left:25%" class="btn btn-primary mx-auto d-block" type="submit">Continuar</button>
+    </form>
+
+
+</body>

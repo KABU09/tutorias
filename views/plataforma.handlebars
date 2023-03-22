@@ -1,0 +1,37 @@
+<style>
+    .cont {
+        margin-top: 20px;
+        padding: 15px;
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    h2 {
+        margin-top:5%;
+        margin-bottom:5%;
+        text-align:center;
+    }
+
+</style>
+<h2>Seleccione las plataformas en que desea impartir lecciones</h2>
+<form method='post' action="/creacionCuenta/savePlataformaTutor">
+    <div class='cont'>
+        {{#each plataformas}}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name='plataforma' id="flexCheckDefault" value="{{this.nombre}}">
+                <label class="form-check-label" for="flexCheckDefault">
+                   <h5> {{this.nombre}} </h5>
+                </label>
+            </div>
+        {{/each}}
+        <br>
+        <button id="submit" type="submit" class="btn btn-primary mx-auto d-block">Seleccionar</button>
+    </div>
+</form>

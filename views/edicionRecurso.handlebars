@@ -1,0 +1,39 @@
+{{#if success}}
+{{>message message=success type="success"}}
+{{/if}}
+<style>
+    .mb-3 {
+        width: 50%;
+        margin: auto;
+    }
+
+    .label {
+        margin-bottom: 20px;
+    }
+
+    form {
+        margin-top: 5%;
+    }
+</style>
+
+<body>
+    <h2 style="text-align:center; margin-top:5%">Edición del recurso</h2>
+    <form method="post" action="actualizarRecurso">
+        <input type='hidden' value="{{resource.nombre}}" name='oldName'>
+        <input type='hidden' value={{curso}} name='curso'>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del recurso</label>
+            <input type="text" value="{{resource.nombre}}" class="form-control" id="nombre" name="newName">
+        </div>
+
+        <div class="mb-3">
+            <label for="link" class="form-label">Link del recurso</label>
+            <input type="text" value="{{resource.path}}" class="form-control" id="link" name="path">
+        </div>
+        <br>
+        <div style='text-align:center'>
+            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        </div>
+    </form>
+   
+</body>
